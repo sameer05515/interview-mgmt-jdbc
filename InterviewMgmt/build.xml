@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Build file	for	our	first application -->
+<project name="interviewmgmt" default="copy-to-server" basedir=".">
+	<path id="project.classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="clean">
+		<delete dir="dist" />
+		<delete dir="bin" />
+	</target>
+	<target name="make" depends="clean">
+		<mkdir dir="dist" />
+		<mkdir dir="bin" />
+	</target>
+	<target name="mySource" depends="make">
+		<!--<javac srcdir="src" destdir="bin" debug="true" includes="**/*.java" />-->
+		<javac encoding="UTF-8" destdir="bin" debug="on" debuglevel="lines,vars,source" deprecation="on" optimize="off">
+			<src path="src" />
+			<classpath>
+				<path refid="project.classpath" />
+			</classpath>
+		</javac>
+	</target>
+	<target name="jar" depends="mySource">
+		<jar destfile="dist/interviewmgmt.jar" basedir="bin" />
+	</target>
+	<target name="copy-to-server" depends="jar">
+		<copy file="dist/interviewmgmt.jar" todir="C:/APPLN_SERVERS/apache-tomcat-6.0.35/apache-tomcat-6.0.35/webapps/bce/WEB-INF/lib/">
+		</copy>
+	</target>
+
+	<target name="jspfilescopy">
+		<echo>Copying jsp files to server</echo>
+		<!--
+		<copy file="jsp/*.jsp" todir="C:/APPLN_SERVERS/apache-tomcat-6.0.35/apache-tomcat-6.0.35/webapps/bce/">
+		</copy>
+		-->
+		<copy todir="C:/APPLN_SERVERS/apache-tomcat-6.0.35/apache-tomcat-6.0.35/webapps/bce/">
+		    <fileset dir="jsp" includes="*.jsp"/>
+		 </copy>
+		<echo>Successfully Copied jsp files to server</echo>
+	</target>
+</project>
